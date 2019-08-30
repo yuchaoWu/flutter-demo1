@@ -30,12 +30,16 @@ class _HomePageState extends State<HomePage> {
           future: getHomePageContent(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              // 数据处理
               var data = json.decode(snapshot.data.toString());
               List<Map> swiper =
                   (data['data']['slides'] as List).cast(); // 顶部轮播组件数
+              List<Map> navigtorList =
+                  (data['data']['category'] as List).cast(); // 类别列表
               return Column(
                 children: <Widget>[
-                  SwiperDiy(swiperDataList: swiper) //页面顶部轮播组件
+                  SwiperDiy(swiperDataList: swiper), //页面顶部轮播组件
+                  TopNavigator(navigatorList: navigtorList) // 导航组件
                 ],
               );
             } else {
@@ -83,7 +87,7 @@ class TopNavigator extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Image.network(item['image'], width: ScreenUtil().setWidth(95)),
-          Text(item('mallCategoryName'))
+          Text(item['mallCategoryName'])
         ],
       ),
     );
@@ -91,6 +95,20 @@ class TopNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    if (navigatorList.length > 10) {
+      navigatorList.removeRange(10, navigatorList.length);
+    }
+
+    return Container(
+      height: ScreenUtil().setHeight(320),
+      padding: EdgeInsets.all(3.0),
+      child: GridView.count(
+        crossAxisCount: 5,
+        padding: EdgeInsets.all(4.0),
+        children: navigatorList.map((item) {
+          return _gridViewItemUI(context, item);
+        }).toList(),
+      ),
+    );
   }
 }
