@@ -21,7 +21,12 @@ class _IndexPageState extends State<IndexPage> {
         icon: Icon(CupertinoIcons.profile_circled), title: Text('会员中心')),
   ];
 
-  final List tabBodies = [HomePage(), CateGoryPage(), CatPage(), MemberPage()];
+  final List<Widget> tabBodies = [
+    HomePage(),
+    CateGoryPage(),
+    CatPage(),
+    MemberPage()
+  ];
   int currentIndex = 0;
   var currentPage;
 
@@ -34,19 +39,21 @@ class _IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(244, 245, 245, 1),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: currentIndex,
-        items: bottomTabs,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-            currentPage = tabBodies[currentIndex];
-          });
-        },
-      ),
-      body: currentPage,
-    );
+        backgroundColor: Color.fromRGBO(244, 245, 245, 1),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: currentIndex,
+          items: bottomTabs,
+          onTap: (index) {
+            setState(() {
+              currentIndex = index;
+              currentPage = tabBodies[currentIndex];
+            });
+          },
+        ),
+        body: IndexedStack(
+          index: currentIndex,
+          children: tabBodies,
+        ));
   }
 }

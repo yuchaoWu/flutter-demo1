@@ -14,6 +14,7 @@ class _HomePageState extends State<HomePage>
   String homePageContent = '正在获取数据';
   @override
   bool get wantKeepAlive => true;
+  @override
   void initState() {
     getHomePageContent().then((val) {
       setState(() {
